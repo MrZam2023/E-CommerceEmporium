@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_list_or_404
 from django.http import HttpResponse
 from datetime import datetime
 from . import models
@@ -22,3 +22,7 @@ def now_dateView(request):
 
 def goodbyView(request):
     return HttpResponse('<h1>Goodby user</h1>')
+
+def postDetailViews(request, id):
+    post_id = get_list_or_404(models.Post, id=id)
+    return render(request, 'post/post_detail.html', {'post_id': post_id})
