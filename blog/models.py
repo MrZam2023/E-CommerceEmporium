@@ -1,29 +1,34 @@
 from django.db import models
+from blog.constants import TYPE_IPHONE
 
-class Post(models.Model):
+
+class Hashtag(models.Model):
+    title = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.title
 
     class Meta:
-        verbose_name = 'Пост'
-        verbose_name_plural = 'Посты'
-
-    TYPE_IPHONE = (
-        ('Apple', 'Apple'),
-        ('Samsung', 'Samsung'),
-        ('Huawei', 'Huawei'),
-        ('Honor', 'Honor')
-    )
+        verbose_name = 'Хэштег'
+        verbose_name_plural = 'Хэштеги'
 
 
-    title = models.CharField(max_length=100, verbose_name='Название модели', null=True)
-    image = models.ImageField(upload_to='', verbose_name='Загрузите фотографию')
-    description = models.TextField(blank=True, null=True, verbose_name='Описание товара')
-    type_iphone =models.CharField(max_length=100, choices=TYPE_IPHONE, verbose_name='Выберите модель')
-    cost = models.PositiveIntegerField(verbose_name='Укажите цену', null=True)
-    director = models.CharField(max_length=100, verbose_name='Укажите название модели')
-    number_of_page =models.IntegerField(null=True, verbose_name='Укажите кол-во товара')
+class Post(models.Model):
+    hashtag = models.ManyToManyField(Hashtag)
+
+    title = models.CharField(max_length=100, null=True)
+    image = models.ImageField(upload_to='',)
+    description = models.TextField(blank=True, null=True, )
+    type_iphone =models.CharField(max_length=100, choices=TYPE_IPHONE, )
+    cost = models.PositiveIntegerField(null=True)
+    director = models.CharField(max_length=100)
+    number_of_page =models.IntegerField(null=True,)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return (f'Название телефона {self.title}\n'
                 f'Цена {self.cost}')
 
+    class Meta:
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'
